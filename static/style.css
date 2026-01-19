@@ -1,0 +1,45 @@
+/* Стили для кнопок действий в таблицах пользователей и транспорта */
+td.actions {
+    text-align: center;
+    vertical-align: middle;
+    width: 160px;               /* фиксированная ширина столбца */
+    min-width: 160px;
+}
+
+.actions .button {
+    display: block;             /* каждая кнопка на новой строке */
+    width: 100%;                /* занимают всю ширину ячейки */
+    padding: 8px 12px;
+    margin: 6px 0;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+/* Редактировать — синий */
+.actions .button.primary {
+    background: #3b82f6;
+    color: white;
+}
+
+.actions .button.primary:hover {
+    background: #2563eb;
+    transform: translateY(-1px);
+}
+
+/* Удалить — красный */
+.actions .button.delete {
+    background: #ef4444;
+    color: white;
+}
+
+.actions .button.delete:hover {
+    background: #dc2626;
+    transform: translateY(-1px);
+}

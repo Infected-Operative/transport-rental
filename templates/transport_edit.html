@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Добавить' if not transport else 'Редактировать' }} транспорт{% endblock %}
+{% block content %}
+<h1>{{ 'Добавить новый транспорт' if not transport else 'Редактировать транспорт' }}</h1>
+
+<form method="post">
+    {{ form.hidden_tag() }}
+    <p>
+        {{ form.type.label }}<br>
+        {{ form.type }}
+    </p>
+    <p>
+        {{ form.model.label }}<br>
+        {{ form.model }}
+    </p>
+    <p>
+        {{ form.status.label }}<br>
+        {{ form.status }}
+    </p>
+    <p>
+        {{ form.price_per_hour.label }}<br>
+        {{ form.price_per_hour }}
+    </p>
+    <p>
+        {{ form.location.label }}<br>
+        {{ form.location }}
+    </p>
+    <p>{{ form.submit }}</p>
+</form>
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Транспорт{% endblock %}
+{% block content %}
+<h1>Список транспорта</h1>
+
+<!-- Фильтр по статусу (для всех пользователей) -->
+<div style="margin-bottom: 20px; text-align: center;">
+    <strong>Фильтр по статусу:</strong>
+    <a href="{{ url_for('transports') }}" class="{% if not current_filter %}active{% endif %}">Все</a> |
+    <a href="{{ url_for('transports', status='available') }}" class="{% if current_filter == 'available' %}active{% endif %}">Доступен</a> |
+    <a href="{{ url_for('transports', status='rented') }}" class="{% if current_filter == 'rented' %}active{% endif %}">Арендован</a> |
+    <a href="{{ url_for('transports', status='maintenance') }}" class="{% if current_filter == 'maintenance' %}active{% endif %}">На обслуживании</a>
+</div>
+
+<style>
+    a.active { font-weight: bold; color: #1877f2; text-decoration: underline; }
+</style>
+
+{% if current_user.is_admin() %}
+    <div class="actions" style="margin-bottom: 20px; text-align: center;">
+        <a href="{{ url_for('transport_edit') }}" class="button primary">Добавить транспорт</a>
+    </div>
+{% endif %}
+
+<table>
+    <thead>
+        <tr>
+            <th>Тип</th>
+            <th>Модель</th>
+            <th>Статус</th>
+            <th>Цена/час</th>
+            <th>Локация</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for t in transports %}
+        <tr>
+            <td>{{ 'Велосипед' if t.type == 'bicycle' else 'Самокат' }}</td>
+            <td>{{ t.model }}</td>
+            <td>
+                {% if t.status == 'available' %}Доступен
+                {% elif t.status == 'rented' %}Арендован
+                {% elif t.status == 'maintenance' %}На обслуживании{% endif %}
+            </td>
+            <td>{{ t.price_per_hour }} руб</td>
+            <td>{{ t.location or '—' }}</td>
+            <td class="actions">
+                {% if current_user.is_admin() %}
+                    <a href="{{ url_for('transport_edit', id=t.id) }}" class="button primary">Редактировать</a>
+                    <form method="post" action="{{ url_for('transport_delete', id=t.id) }}" style="display:inline;">
+                        <button type="submit" class="button delete" onclick="return confirm('Удалить этот транспорт?')">Удалить</button>
+                    </form>
+                {% else %}
+                    <!-- Заглушка для бронирования обычным пользователем -->
+                    {% if t.status == 'available' %}
+                        <form method="post" action="{{ url_for('transports') }}" style="display:inline;">
+                            <button type="submit" class="button primary" onclick="alert('Бронирование {{ t.model }} успешно оформлено! (заглушка)'); return false;">Забронировать</button>
+                        </form>
+                    {% else %}
+                        <span style="color: #999;">Недоступен</span>
+                    {% endif %}
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

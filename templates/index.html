@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Главная{% endblock %}
+{% block content %}
+<h1 style="text-align: center; color: #1877f2;">Система аренды транспорта</h1>
+<p style="text-align: center; font-size: 1.2rem;">Учёт велосипедов и самокатов, бронирование, статусы</p>
+
+<div style="text-align: center; margin: 40px 0;">
+    <h2>Статистика</h2>
+    <p>Всего транспорта: {{ stats.total }}</p>
+    <p>Доступно: {{ stats.available }}</p>
+    <p>Арендовано: {{ stats.rented }}</p>
+    <p>На обслуживании: {{ stats.maintenance }}</p>
+</div>
+
+<p style="text-align: center;">
+    {% if current_user.is_authenticated %}
+        Привет, {{ current_user.username }}!
+    {% else %}
+        <a href="{{ url_for('login') }}">Войдите</a> или <a href="{{ url_for('register') }}">зарегистрируйтесь</a>, чтобы управлять транспортом.
+    {% endif %}
+</p>
+{% endblock %}
