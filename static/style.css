@@ -43,3 +43,62 @@ td.actions {
     background: #dc2626;
     transform: translateY(-1px);
 }
+
+/* Стили только для форм входа и регистрации */
+.auth-form {
+    max-width: 400px;          /* фиксированная ширина формы */
+    margin: 40px auto;         /* центрирование формы */
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.auth-form h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #1877f2;
+}
+
+.auth-form .form-group {
+    margin-bottom: 20px;
+}
+
+.auth-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+}
+
+.auth-form input[type="text"],
+.auth-form input[type="password"] {
+    width: 100%;               /* поле на всю ширину контейнера */
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 1rem;
+}
+
+.auth-form button {
+    width: 100%;               /* кнопка на всю ширину */
+    padding: 12px;
+    background: #1877f2;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.auth-form button:hover {
+    background: #166fe5;
+}
+
+.auth-form .footer-link {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.95rem;
+}
