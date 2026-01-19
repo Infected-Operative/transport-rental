@@ -46,7 +46,7 @@
 
 ### 1. Клонирование репозитория
 ```bash
-git clone https://github.com/ваше-имя/transport_rental.git
+git clone https://github.com/Infected-Operative/transport_rental.git
 cd transport_rental
 ```
 
