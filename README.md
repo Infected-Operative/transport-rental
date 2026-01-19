@@ -29,22 +29,18 @@
 - **Views** — шаблоны в папке `templates/`
 - **Controllers** — маршруты и логика в `app.py`
 
-## Автор
-- **Имя:** [Ваше имя]
-- **Группа:** [Ваша группа]
-
 ## Структура проекта
-transport_rental/
-├── app.py                  # Основное приложение (контроллеры + маршруты)
-├── models.py               # Модели БД (MVC: Model)
-├── forms.py                # Формы WTForms
-├── templates/              # Шаблоны (MVC: View)
-├── static/style.css        # Единые стили
-├── instance/rental.db      # База данных SQLite (создаётся автоматически)
-├── tests/test_app.py       # 25 юнит-тестов
-├── requirements.txt
-├── README.md
-└── .gitignore
+- transport_rental/
+- ├── app.py                  # Основное приложение (контроллеры + маршруты)
+- ├── models.py               # Модели БД (MVC: Model)
+- ├── forms.py                # Формы WTForms
+- ├── templates/              # Шаблоны (MVC: View)
+- ├── static/style.css        # Единые стили
+- ├── instance/rental.db      # База данных SQLite (создаётся автоматически)
+- ├── tests/test_app.py       # 25 юнит-тестов
+- ├── requirements.txt
+- ├── README.md
+- └── .gitignore
 
 ## Установка и запуск
 
@@ -52,56 +48,31 @@ transport_rental/
 ```bash
 git clone https://github.com/ваше-имя/transport_rental.git
 cd transport_rental
+```
 
-
-
-2. Создание виртуального окружения (рекомендуется)
-Bashpython -m venv venv
-# Активация:
-# Windows:
+### 2. Создание виртуального окружения (рекомендуется)
+```Bash
+python -m venv venv
+```
+## Активация:
+### Windows:
 venv\Scripts\activate
-# Linux/Mac:
+### Linux/Mac:
 source venv/bin/activate
 
+### 3. Установка зависимостей
+```Bash
+pip install -r requirements.txt
+```
 
-
-3. Установка зависимостей
-Bashpip install -r requirements.txt
-
-
-
-4. Запуск приложения
-Bashpython app.py
+### 4. Запуск приложения
+```Bash
+python app.py
+```
 Приложение будет доступно по адресу: http://127.0.0.1:5000
 
-
-
-Тестовые учётные записи
-
-Администратор (создаётся автоматически при первом запуске):
-Логин: admin
-Пароль: admin123
-Права: полный доступ (CRUD пользователей и транспорта, статистика)
-
-Обычный пользователь:
-Зарегистрируйтесь через форму "/register"
-Права: просмотр транспорта, фильтрация, заглушка бронирования
-
-
-Тестирование
-Проект содержит 25 юнит-тестов, покрывающих основные сценарии:
-
-Аутентификацию
-Роли и защиту маршрутов
-CRUD-операции
-Фильтрацию
-Заглушку бронирования
-
-Запуск тестов:
-Bashpytest tests/test_app.py -v
+## Запуск тестов:
+```Bash
+pytest tests/test_app.py -v
+```
 Ожидаемый результат: 25 passed
-Дополнительно
-
-Код соответствует PEP8
-Проект готов к развёртыванию (можно легко добавить Docker)
-Все страницы имеют единый аккуратный дизайн с адаптивными элементами
