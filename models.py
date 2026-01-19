@@ -23,9 +23,9 @@ class User(UserMixin, db.Model):
 class Transport(db.Model):
     __tablename__ = 'transports'
     id = db.Column(db.Integer, primary_key=True)
-    type = db.Column(db.String(20), nullable=False)  # bicycle / scooter
+    type = db.Column(db.String(20), nullable=False)  # Велосипед / самокат
     model = db.Column(db.String(100), nullable=False)
-    status = db.Column(db.String(20), default='available')  # available, rented, maintenance
+    status = db.Column(db.String(20), default='available')  # Доступно, арендовано, тех.обслуживание
     price_per_hour = db.Column(db.Float, nullable=False)
     location = db.Column(db.String(100))
 
