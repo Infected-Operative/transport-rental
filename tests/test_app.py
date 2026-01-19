@@ -46,61 +46,61 @@ class TransportRentalTestCase(unittest.TestCase):
     def logout(self):
         return self.client.get('/logout', follow_redirects=True)
 
-    # 1. Home page loads
+    # 1. Домашняя страница загружается
     def test_1_home_page_loads(self):
         rv = self.client.get('/')
         self.assertEqual(rv.status_code, 200)
         self.assertIn(b'<h1', rv.data)  # просто проверяем, что это HTML с заголовком
 
-    # 2. Transports page requires login
+    # 2. Страница транспорта требует логина
     def test_2_transports_requires_login(self):
         rv = self.client.get('/transports', follow_redirects=True)
         self.assertIn(b'login', rv.data)  # редирект на /login
 
-    # 3. Successful registration (check redirect to login)
+    # 3. Успешная регистрация
     def test_3_successful_registration(self):
         rv = self.register('newuser')
         self.assertIn(b'login', rv.data)  # после регистрации редирект на логин
 
-    # 4. Duplicate registration stays on register page
+    # 4. Дубликат имени пользователя при регистрации
     def test_4_duplicate_registration(self):
         self.register('duplicate')
         rv = self.register('duplicate')
         self.assertIn(b'register', rv.data)  # остаёмся на странице регистрации
 
-    # 5. Successful login redirects to home
+    # 5. Успешный логин: редиректит на главную
     def test_5_successful_login(self):
         self.register('loginuser')
         rv = self.login('loginuser', 'password')
         self.assertIn(b'/', rv.data)  # редирект на главную
 
-    # 6. Failed login stays on login page
+    # 6. Неверный логин: остаёмся на странице логина
     def test_6_failed_login(self):
         rv = self.login('wrong', 'wrong')
         self.assertIn(b'login', rv.data)
 
-    # 7. Logout redirects to home
+    # 7. Выход работает
     def test_7_logout(self):
         self.register('logoutuser')
         self.login('logoutuser', 'password')
         rv = self.logout()
         self.assertIn(b'/', rv.data)
 
-    # 8. Admin sees users page
+    # 8. Админ видит страницу пользователей
     def test_8_admin_sees_users_page(self):
         self.login('admin', 'admin123')
         rv = self.client.get('/users')
         self.assertEqual(rv.status_code, 200)
         self.assertIn(b'users', rv.data)
 
-    # 9. Regular user cannot access users page
+    # 9. Обычный пользователь не видит страницу пользователей
     def test_9_user_cannot_access_users_page(self):
         self.register('regular')
         self.login('regular', 'password')
         rv = self.client.get('/users', follow_redirects=True)
         self.assertIn(b'/', rv.data)  # редирект на главную
 
-    # 10. Admin can add transport
+    # 10. Админ может добавить транспорт
     def test_10_admin_can_add_transport(self):
         self.login('admin', 'admin123')
         rv = self.client.post('/transport/add', data={
@@ -111,7 +111,7 @@ class TransportRentalTestCase(unittest.TestCase):
         }, follow_redirects=True)
         self.assertIn(b'transports', rv.data)
 
-    # 11. Regular user cannot add transport
+    # 11. Обычный пользователь не может добавить транспорт
     def test_11_user_cannot_add_transport(self):
         self.register('user1')
         self.login('user1', 'password')
@@ -121,21 +121,21 @@ class TransportRentalTestCase(unittest.TestCase):
         }, follow_redirects=True)
         self.assertIn(b'transports', rv.data)  # редирект обратно
 
-    # 12. Filter by available works
+    # 12. Фильтр по доступным работает
     def test_12_filter_by_available(self):
         self.login('admin', 'admin123')
         self.client.post('/transport/add', data={'type': 'bicycle', 'model': 'AvailableBike', 'price_per_hour': 100})
         rv = self.client.get('/transports?status=available')
         self.assertIn(b'AvailableBike', rv.data)
 
-    # 13. Filter by rented works
+    # 13. Фильтр по арендованным работает
     def test_13_filter_by_rented(self):
         self.login('admin', 'admin123')
         self.client.post('/transport/add', data={'type': 'scooter', 'model': 'RentedScooter', 'price_per_hour': 150, 'status': 'rented'})
         rv = self.client.get('/transports?status=rented')
         self.assertIn(b'RentedScooter', rv.data)
 
-    # 14. Regular user sees booking button
+    # 14. Обычный пользователь видит кнопку "Забронировать"
     def test_14_user_sees_book_button(self):
         self.login('admin', 'admin123')
         self.client.post('/transport/add', data={'type': 'bicycle', 'model': 'Bookable', 'price_per_hour': 100})
@@ -145,7 +145,7 @@ class TransportRentalTestCase(unittest.TestCase):
         rv = self.client.get('/transports')
         self.assertIn(b'Book', rv.data)  # текст кнопки на английском в тесте
 
-    # 15. Booking button is present for available transport
+    # 15. Кнопка "Забронировать" отображается для доступного транспорта
     def test_15_booking_button_present(self):
         self.login('admin', 'admin123')
         self.client.post('/transport/add', data={'type': 'bicycle', 'model': 'BookableBike2', 'price_per_hour': 100})
@@ -155,7 +155,7 @@ class TransportRentalTestCase(unittest.TestCase):
         rv = self.client.get('/transports')
         self.assertIn(b'Book', rv.data)
 
-    # 16. Admin can edit transport
+    # 16. Админ может редактировать транспорт
     def test_16_admin_can_edit_transport(self):
         self.login('admin', 'admin123')
         self.client.post('/transport/add', data={'type': 'bicycle', 'model': 'OldName', 'price_per_hour': 100})
@@ -166,7 +166,7 @@ class TransportRentalTestCase(unittest.TestCase):
         }, follow_redirects=True)
         self.assertIn(b'NewName', rv.data)
 
-    # 17. Admin can delete transport
+    # 17. Админ может удалить транспорт
     def test_17_admin_can_delete_transport(self):
         self.login('admin', 'admin123')
         self.client.post('/transport/add', data={'type': 'bicycle', 'model': 'ToDelete', 'price_per_hour': 100})
@@ -175,7 +175,7 @@ class TransportRentalTestCase(unittest.TestCase):
         rv = self.client.post(f'/transport/delete/{t.id}', follow_redirects=True)
         self.assertNotIn(b'ToDelete', rv.data)
 
-    # 18. Admin can edit user
+    # 18. Админ может редактировать другого пользователя
     def test_18_admin_can_edit_user(self):
         self.register('edituser')
         self.login('admin', 'admin123')
@@ -186,7 +186,7 @@ class TransportRentalTestCase(unittest.TestCase):
         }, follow_redirects=True)
         self.assertIn(b'newname', rv.data)
 
-    # 19. Admin can delete other user
+    # 19. Админ может удалить другого пользователя
     def test_19_admin_can_delete_other_user(self):
         self.register('todelete')
         self.login('admin', 'admin123')
@@ -199,7 +199,7 @@ class TransportRentalTestCase(unittest.TestCase):
             count_after = User.query.count()
         self.assertEqual(count_after, count_before - 1)
 
-    # 20. Admin cannot delete self (user still exists)
+    # 20. Админ не может удалить самого себя
     def test_20_admin_cannot_delete_self(self):
         self.login('admin', 'admin123')
         with app.app_context():
@@ -208,20 +208,20 @@ class TransportRentalTestCase(unittest.TestCase):
         with app.app_context():
             self.assertIsNotNone(User.query.filter_by(username='admin').first())
 
-    # 21. Home page contains statistics section
+    # 21. Домашняя страница показывает статистику
     def test_21_home_page_stats(self):
         self.login('admin', 'admin123')
         rv = self.client.get('/')
         self.assertIn(b'<h2>', rv.data)  # проверяем наличие раздела с заголовком h2 (Статистика)
 
-    # 22. Only admin can access edit transport page
+    # 22. Только админ может редактировать транспорт
     def test_22_only_admin_can_edit_transport(self):
         self.register('regular')
         self.login('regular', 'password')
         rv = self.client.get('/transport/edit/1', follow_redirects=True)
         self.assertIn(b'transports', rv.data)  # редирект на список
 
-    # 23. Filter "All" shows all items
+    # 23. Фильтр "все" показывает весь транспорт
     def test_23_filter_all_shows_all(self):
         self.login('admin', 'admin123')
         self.client.post('/transport/add', data={'type': 'bicycle', 'model': 'All1', 'price_per_hour': 100})
@@ -230,7 +230,7 @@ class TransportRentalTestCase(unittest.TestCase):
         self.assertIn(b'All1', rv.data)
         self.assertIn(b'All2', rv.data)
 
-    # 24. Regular user does not see admin buttons
+    # 24. Обычный пользователь не видит кнопки администрирования
     def test_24_user_does_not_see_admin_buttons(self):
         self.register('viewer')
         self.login('viewer', 'password')
@@ -239,7 +239,7 @@ class TransportRentalTestCase(unittest.TestCase):
         self.assertNotIn(b'Edit', rv.data)
         self.assertNotIn(b'Delete', rv.data)
 
-        # 25. Admin sees all control buttons
+        # 25. Админ видит все кнопки управления
     def test_25_admin_sees_all_controls(self):
         self.login('admin', 'admin123')
         # Добавляем транспорт, чтобы появились кнопки редактирования и удаления
@@ -249,7 +249,7 @@ class TransportRentalTestCase(unittest.TestCase):
             'price_per_hour': 100
         })
         rv = self.client.get('/transports')
-        # Проверяем наличие ссылок по их URL (английские части, гарантированно присутствуют)
+        # Проверяем наличие ссылок по их URL
         self.assertIn(b'/transport/add', rv.data)      # ссылка "Добавить транспорт"
         self.assertIn(b'/transport/edit/', rv.data)    # ссылка "Редактировать"
         self.assertIn(b'/transport/delete/', rv.data)  # ссылка "Удалить"

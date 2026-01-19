@@ -2,13 +2,13 @@
 td.actions {
     text-align: center;
     vertical-align: middle;
-    width: 160px;               /* фиксированная ширина столбца */
+    width: 160px;
     min-width: 160px;
 }
 
 .actions .button {
-    display: block;             /* каждая кнопка на новой строке */
-    width: 100%;                /* занимают всю ширину ячейки */
+    display: block;
+    width: 100%;
     padding: 8px 12px;
     margin: 6px 0;
     border: none;
