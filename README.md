@@ -46,8 +46,8 @@
 
 ### 1. Клонирование репозитория
 ```bash
-git clone https://github.com/Infected-Operative/transport_rental.git
-cd transport_rental
+git clone https://github.com/Infected-Operative/transport-rental.git
+cd transport-rental
 ```
 
 ### 2. Создание виртуального окружения (рекомендуется)
